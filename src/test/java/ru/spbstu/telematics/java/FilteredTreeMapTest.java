@@ -3,6 +3,7 @@ package ru.spbstu.telematics.java;
 import org.junit.Test;
 
 import java.util.Map;
+import java.util.TreeMap;
 
 import static org.junit.Assert.*;
 
@@ -58,5 +59,32 @@ public class FilteredTreeMapTest {
         assertTrue(map.containsValue("Two"));
         assertFalse(map.containsValue("Three"));
     }
-}
 
+    @Test
+    public void compareWithTreeMap() {
+        FilteredTreeMap<Integer, String> filteredTreeMap = new FilteredTreeMap<>();
+        TreeMap<Integer, String> standardTreeMap = new TreeMap<>();
+
+        filteredTreeMap.put(1, "One");
+        filteredTreeMap.put(2, "Two");
+        filteredTreeMap.put(3, "Three");
+
+        standardTreeMap.put(1, "One");
+        standardTreeMap.put(2, "Two");
+        standardTreeMap.put(3, "Three");
+
+        // Сравнение размерности
+        assertEquals(standardTreeMap.size(), filteredTreeMap.size());
+
+        // Сравнение значений
+        for (Map.Entry<Integer, String> entry : standardTreeMap.entrySet()) {
+            assertEquals(entry.getValue(), filteredTreeMap.get(entry.getKey()));
+        }
+
+        // Удаление элемента и повторная проверка
+        filteredTreeMap.remove(1);
+        standardTreeMap.remove(1);
+        assertEquals(standardTreeMap.size(), filteredTreeMap.size());
+        assertNull(filteredTreeMap.get(1));
+    }
+}
